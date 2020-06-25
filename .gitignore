@@ -1,3 +1,7 @@
+/node_modules
+/bash.exe.stackdump
+/dist
+
 # Logs
 logs
 *.log
