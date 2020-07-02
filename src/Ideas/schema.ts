@@ -19,4 +19,8 @@ const ideasSchema = new Schema(
   { versionKey: false },
 );
 
+ideasSchema.set('toJSON', {
+  virtuals: true,
+});
+
 export default mongoose.model<IdeasModel>('ideas', ideasSchema);

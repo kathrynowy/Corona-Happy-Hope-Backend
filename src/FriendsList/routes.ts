@@ -5,5 +5,5 @@ import { addFriend, createFriendList, getAllFriendListsByUserId } from './contro
 export default express
   .Router()
   .post('/createFriendList', createFriendList)
-  .get('/getAllGoodListsByUserId', getAllFriendListsByUserId)
+  .get('/getAllFriendListsByUserId', getAllFriendListsByUserId)
   .post('/addFriend', addFriend);

@@ -1,13 +1,17 @@
 import mongoose from '../context';
-import { FavouritesListModel } from './model';
+import { WishListModel } from './model';
 
 const Schema = mongoose.Schema;
 
-const favouritesListSchema = new Schema(
+const wishListSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'user',
+    },
+    name: {
+      type: String,
+      default: 'вишлист',
     },
     goods: [
       {
@@ -19,8 +23,8 @@ const favouritesListSchema = new Schema(
   { versionKey: false },
 );
 
-favouritesListSchema.set('toJSON', {
+wishListSchema.set('toJSON', {
   virtuals: true,
 });
 
-export default mongoose.model<FavouritesListModel>('favouritesList', favouritesListSchema);
+export default mongoose.model<WishListModel>('wishList', wishListSchema);
