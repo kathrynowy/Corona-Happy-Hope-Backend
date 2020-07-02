@@ -1,4 +1,4 @@
-import * as autoIncrement from 'mongoose-auto-increment';
+import * as bcrypt from 'bcryptjs';
 
 import mongoose from '../context';
 import { UserModel } from './model';
@@ -7,9 +7,9 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    login: {
+    email: {
       type: Schema.Types.String,
-      required: [true, 'Login is required'],
+      required: [true, 'Email is required'],
     },
     password: {
       type: Schema.Types.String,
@@ -35,14 +35,6 @@ const userSchema = new Schema(
         ref: 'user',
       },
     ],
-    amountOfLikes: {
-      type: Number,
-      default: 0,
-    },
-    amountOfViews: {
-      type: Number,
-      default: 0,
-    },
     city: String,
     country: String,
     image: String,
@@ -83,5 +75,9 @@ const userSchema = new Schema(
 userSchema.set('toJSON', {
   virtuals: true,
 });
+
+userSchema.methods.validPassword = function (password: string) {
+  return bcrypt.compareSync(password, this.password);
+};
 
 export default mongoose.model<UserModel>('user', userSchema);

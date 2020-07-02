@@ -27,9 +27,9 @@ export const addFavouriteGood: Controller = async (req, res, next) => {
   try {
     const { userId, goodId } = req.body;
 
-    const control = await favouritesListHelper.addFavourite(userId, goodId);
+    const favourite = await favouritesListHelper.addFavourite(userId, goodId);
 
-    res.json(control);
+    res.json(favourite);
   } catch (error) {
     next(error);
   }

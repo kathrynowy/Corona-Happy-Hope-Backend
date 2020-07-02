@@ -16,7 +16,7 @@ const friendsListSchema = new Schema(
     },
     accessRule: {
       type: AccessRules,
-      default: AccessRules.All,
+      default: AccessRules.AllUsers,
     },
     accessUsers: [
       {
@@ -32,5 +32,9 @@ const friendsListSchema = new Schema(
   },
   { versionKey: false },
 );
+
+friendsListSchema.set('toJSON', {
+  virtuals: true,
+});
 
 export default mongoose.model<FriendsListModel>('friendsList', friendsListSchema);
