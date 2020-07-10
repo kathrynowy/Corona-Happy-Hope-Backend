@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon --exec ts-node index.ts",
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node dist/index.js",
     "tslint": "tslint -p tsconfig.json -c tslint.json",
     "tslint-fix": "tslint --fix -p tsconfig.json -c tslint.json"
@@ -44,6 +44,9 @@
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
+  },
+  "engines": {
+    "node": "12.x"
   },
   "bugs": {
     "url": "https://github.com/kathrynowy/Corona-Happy-Hope-Backend/issues"
