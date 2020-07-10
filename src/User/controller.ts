@@ -18,8 +18,10 @@ export const signUp: Controller = async (req, res, next) => {
         password: generateHash(req.body.password),
       });
 
-      await wishListHelper.create({ userId: newUser.id, name: 'вишлист', goods: [] });
+      const wishlist = await wishListHelper.create({ userId: newUser.id, name: 'вишлист', goods: [] });
       await favouriteListHelper.create({ userId: newUser.id, goods: [] });
+
+      await userHelper.addCurrentWishlist(newUser.id, wishlist.id);
 
       res.json(newUser);
     } catch (error) {
@@ -28,11 +30,47 @@ export const signUp: Controller = async (req, res, next) => {
   }
 };
 
+export const changeCurrentWishlist: Controller = async (req, res, next) => {
+  try {
+    const { userId, wishListId } = req.body;
+
+    res.json(await userHelper.addCurrentWishlist(userId, wishListId));
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getUserById: Controller = async (req, res, next) => {
   try {
     const { userId } = req.body;
 
-    res.json(await userHelper.getById(userId));
+    const newuser = await userHelper.getById(userId);
+
+    res.json(newuser);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const bookGood: Controller = async (req, res, next) => {
+  try {
+    const { userId, bookUserId, goodId, wishListId } = req.body;
+
+    const isAlreadyBooked = await wishListHelper.getBookedGood(wishListId, goodId);
+
+    let good;
+
+    if (!isAlreadyBooked) {
+      good = await userHelper.bookGood(userId, { bookUserId, goodId, wishListId });
+
+      const addedToWishListBookedGoods = await wishListHelper.addBookedGood(wishListId, goodId);
+    } else {
+      good = await userHelper.unbookGood(userId, { bookUserId, goodId, wishListId });
+
+      const removeFromWishListBookedGoods = await wishListHelper.removeBookedGood(wishListId, goodId);
+    }
+
+    res.json(good);
   } catch (error) {
     next(error);
   }
@@ -100,7 +138,12 @@ export const signIn: Controller = async (req: GetUserAuthInfoRequest, res, next)
     return res.status(200).json({
       email: req.body.email,
       token: req.body.token,
-      id: req.user._id,
+      id: req.body.id,
+      city: req.body.city,
+      country: req.body.country,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      currentWishlist: req.body.currentWishlist,
     }); // TODO:
   } catch (error) {
     next(error);

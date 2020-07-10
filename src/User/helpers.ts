@@ -7,6 +7,9 @@ const signIn = async (email: string | any, password: string | any) => await User
 
 const getById = async (id: string | any) => await User.findById(id);
 
+const addCurrentWishlist = async (userId: string | any, wishListId: string | any) =>
+  await User.findByIdAndUpdate(userId, { currentWishlist: wishListId });
+
 const checkUserExistence = (email: string) => User.find({ email });
 
 const getFollowersById = async (id: string | any) =>
@@ -14,6 +17,12 @@ const getFollowersById = async (id: string | any) =>
 
 const getFollowingById = async (id: string | any) =>
   await User.findById(id).populate({ path: 'following', model: User });
+
+const bookGood = async (userId: string | any, data: any) =>
+  await User.findByIdAndUpdate(userId, { $push: { bookedGoods: data } });
+
+const unbookGood = async (userId: string | any, data: any) =>
+  await User.findByIdAndUpdate(userId, { $pull: { bookedGoods: data } });
 
 const addToFollowing = async (userId: string | any, followingId: string | any) => {
   await User.findByIdAndUpdate(userId, { $push: { following: followingId } });
@@ -29,6 +38,7 @@ const getByName = async (name: string | any, userId: string | any) => {
 
   return !isFirstAndLast
     ? await User.find({
+        _id: { $ne: userId },
         $or: [
           {
             firstName: {
@@ -46,6 +56,7 @@ const getByName = async (name: string | any, userId: string | any) => {
         followers: { $ne: userId },
       })
     : await User.find({
+        _id: { $ne: userId },
         firstName: first,
         lastName: {
           $regex: last,
@@ -70,4 +81,7 @@ export default {
   deleteFromFollowing,
   checkUserExistence,
   getByName,
+  addCurrentWishlist,
+  bookGood,
+  unbookGood,
 };

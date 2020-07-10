@@ -13,9 +13,9 @@ export const createWishList: Controller = async (req, res, next) => {
 
 export const deleteWish: Controller = async (req, res, next) => {
   try {
-    const { userId, goodId } = req.body;
+    const { userId, goodId, wishListId } = req.body;
 
-    const deleted = await wishListHelper.deleteWishByUserId(userId, goodId);
+    const deleted = await wishListHelper.deleteWishByUserId(userId, goodId, wishListId);
 
     res.json(deleted);
   } catch (error) {
@@ -23,13 +23,25 @@ export const deleteWish: Controller = async (req, res, next) => {
   }
 };
 
-export const getWishListByUserId: Controller = async (req, res, next) => {
+export const editWishList: Controller = async (req, res, next) => {
   try {
-    const { userId } = req.body;
+    const { wishListId, data } = req.body;
 
-    const wishList = await wishListHelper.getByUserId(userId);
+    const deleted = await wishListHelper.editWishListById(wishListId, data);
 
-    res.json(wishList[0]);
+    res.json(deleted);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getWishListById: Controller = async (req, res, next) => {
+  try {
+    const { currentWishList } = req.body;
+
+    const wishList = await wishListHelper.getById(currentWishList);
+
+    res.json(wishList);
   } catch (error) {
     next(error);
   }
@@ -39,7 +51,7 @@ export const getAllWishListsByUserId: Controller = async (req, res, next) => {
   try {
     const { userId } = req.body;
 
-    const wishList = await wishListHelper.getByUserId(userId);
+    const wishList = await wishListHelper.getAllByUserId(userId);
 
     res.json(wishList);
   } catch (error) {
@@ -49,9 +61,9 @@ export const getAllWishListsByUserId: Controller = async (req, res, next) => {
 
 export const addWishGood: Controller = async (req, res, next) => {
   try {
-    const { userId, goodId, wishListId } = req.body;
+    const { userId, goodId, currentWishList } = req.body;
 
-    const control = await wishListHelper.addWish(userId, goodId, wishListId);
+    const control = await wishListHelper.addWish(userId, goodId, currentWishList);
 
     res.json(control);
   } catch (error) {

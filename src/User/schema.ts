@@ -37,7 +37,10 @@ const userSchema = new Schema(
     ],
     city: String,
     country: String,
-    image: String,
+    image: {
+      type: Schema.Types.String,
+      default: 'https://i.pinimg.com/originals/2c/7b/59/2c7b59d643e7649ea88681b69a29a7c9.jpg',
+    },
     goods: [
       {
         type: Schema.Types.ObjectId,
@@ -50,6 +53,11 @@ const userSchema = new Schema(
         ref: 'list',
       },
     ],
+    currentWishlist: String,
+    isVisibleInSearch: {
+      type: Schema.Types.Boolean,
+      default: true,
+    },
     bookedGoods: [
       {
         goodId: {
@@ -60,6 +68,7 @@ const userSchema = new Schema(
           type: Schema.Types.ObjectId,
           ref: 'good',
         },
+        wishListId: String,
       },
     ],
     likedGoods: [

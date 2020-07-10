@@ -26,6 +26,12 @@ passport.use(
         }
 
         req.body.token = generateToken(user._id);
+        req.body.currentWishlist = user.currentWishlist;
+        req.body.city = user.city;
+        req.body.country = user.country;
+        req.body.firstName = user.firstName;
+        req.body.lastName = user.lastName;
+        req.body.id = user._id;
 
         return done(null, user);
       } catch (error) {
