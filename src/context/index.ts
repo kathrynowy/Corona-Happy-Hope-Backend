@@ -5,8 +5,8 @@ import * as autoIncrement from 'mongoose-auto-increment';
 import * as path from 'path';
 import * as defaultConfig from '../../config/development.json';
 
-const configDir = path.resolve(__dirname, '../../config');
-config.util.setModuleDefaults('NODE_ENV', config.util.loadFileConfigs(configDir));
+// const configDir = path.resolve(__dirname, '../../config');
+// config.util.setModuleDefaults('NODE_ENV', config.util.loadFileConfigs(configDir));
 // const dbConfig = config.get('NODE_ENV').dbConfig;
 
 /* tslint:disable:no-console */
