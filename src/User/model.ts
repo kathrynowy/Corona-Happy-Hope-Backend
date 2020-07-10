@@ -13,6 +13,9 @@ export interface UserModel extends mongoose.Document {
   city: string;
   country: string;
   image: string;
+  currentWishlist: string;
+  currentFriendlist: string;
+  isVisibleInSearch: boolean;
   goods: string[];
   lists: string[]; // ???
   bookedGoods: string[];

@@ -13,7 +13,22 @@ const wishListSchema = new Schema(
       type: String,
       default: 'вишлист',
     },
+    image: {
+      type: String,
+      default: '',
+    },
+    description: {
+      type: String,
+      default: '',
+    },
     goods: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'good',
+        unique: true,
+      },
+    ],
+    bookedGoods: [
       {
         type: Schema.Types.ObjectId,
         ref: 'good',

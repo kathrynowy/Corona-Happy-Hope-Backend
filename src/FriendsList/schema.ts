@@ -1,6 +1,5 @@
 import mongoose from '../context';
 import { FriendsListModel } from './model';
-import { AccessRules } from './types';
 
 const Schema = mongoose.Schema;
 
@@ -14,11 +13,7 @@ const friendsListSchema = new Schema(
       type: Schema.Types.String,
       required: [true, 'name is required'],
     },
-    accessRule: {
-      type: AccessRules,
-      default: AccessRules.AllUsers,
-    },
-    accessUsers: [
+    friends: [
       {
         type: Schema.Types.ObjectId,
         ref: 'user',
@@ -28,7 +23,10 @@ const friendsListSchema = new Schema(
       type: Schema.Types.String,
       required: [true, 'description is required'],
     },
-    image: String,
+    image: {
+      type: String,
+      default: '',
+    },
   },
   { versionKey: false },
 );
