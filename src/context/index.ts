@@ -12,8 +12,8 @@ const dbConfig = config.get('NODE_ENV').dbConfig;
 /* tslint:disable:no-console */
 const connectWithRetry = () => {
   mongoose
-    .connect(dbConfig.uri || defaultConfig.dbConfig.uri, { useNewUrlParser: true })
-    .then(async () => console.log('Connection to DB established successfully', dbConfig.uri))
+    .connect(process.env.MONGODB_URI || dbConfig.uri || defaultConfig.dbConfig.uri, { useNewUrlParser: true })
+    .then(async () => console.log('Connection to DB established successfully', process.env.MONGODB_URI || dbConfig.uri))
     .catch((error) => {
       console.log('Connection to DB failed', error);
       setTimeout(connectWithRetry, 5000);
