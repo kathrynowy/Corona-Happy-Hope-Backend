@@ -19,4 +19,8 @@ const favouritesListSchema = new Schema(
   { versionKey: false },
 );
 
+favouritesListSchema.set('toJSON', {
+  virtuals: true,
+});
+
 export default mongoose.model<FavouritesListModel>('favouritesList', favouritesListSchema);

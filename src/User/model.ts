@@ -1,19 +1,27 @@
+import { Request } from 'express';
+
 import mongoose from '../context';
 
 export interface UserModel extends mongoose.Document {
-  login: string;
+  validPassword(password: string): any;
+  email: string;
   password: string;
   firstName: string;
   lastName: string;
   followers: string[];
   following: string[];
-  amountOfLikes: number;
-  amountOfViews: number;
   city: string;
   country: string;
   image: string;
+  currentWishlist: string;
+  currentFriendlist: string;
+  isVisibleInSearch: boolean;
   goods: string[];
-  lists: string[];
+  lists: string[]; // ???
   bookedGoods: string[];
   likedGoods: string[];
+}
+
+export interface GetUserAuthInfoRequest extends Request {
+  user: any;
 }

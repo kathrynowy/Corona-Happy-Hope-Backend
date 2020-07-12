@@ -1,4 +1,4 @@
-import * as autoIncrement from 'mongoose-auto-increment';
+import * as bcrypt from 'bcryptjs';
 
 import mongoose from '../context';
 import { UserModel } from './model';
@@ -7,9 +7,9 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    login: {
+    email: {
       type: Schema.Types.String,
-      required: [true, 'Login is required'],
+      required: [true, 'Email is required'],
     },
     password: {
       type: Schema.Types.String,
@@ -35,17 +35,12 @@ const userSchema = new Schema(
         ref: 'user',
       },
     ],
-    amountOfLikes: {
-      type: Number,
-      default: 0,
-    },
-    amountOfViews: {
-      type: Number,
-      default: 0,
-    },
     city: String,
     country: String,
-    image: String,
+    image: {
+      type: Schema.Types.String,
+      default: 'https://i.pinimg.com/originals/2c/7b/59/2c7b59d643e7649ea88681b69a29a7c9.jpg',
+    },
     goods: [
       {
         type: Schema.Types.ObjectId,
@@ -58,6 +53,11 @@ const userSchema = new Schema(
         ref: 'list',
       },
     ],
+    currentWishlist: String,
+    isVisibleInSearch: {
+      type: Schema.Types.Boolean,
+      default: true,
+    },
     bookedGoods: [
       {
         goodId: {
@@ -68,6 +68,7 @@ const userSchema = new Schema(
           type: Schema.Types.ObjectId,
           ref: 'good',
         },
+        wishListId: String,
       },
     ],
     likedGoods: [
@@ -83,5 +84,9 @@ const userSchema = new Schema(
 userSchema.set('toJSON', {
   virtuals: true,
 });
+
+userSchema.methods.validPassword = function (password: string) {
+  return bcrypt.compareSync(password, this.password);
+};
 
 export default mongoose.model<UserModel>('user', userSchema);

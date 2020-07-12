@@ -1,9 +1,11 @@
 import * as express from 'express';
 
-import { addFriend, createFriendList, getAllFriendListsByUserId } from './controller';
+import { addFriend, createFriendList, editFriendList, getAllFriendListsByUserId, getListById } from './controller';
 
 export default express
   .Router()
   .post('/createFriendList', createFriendList)
-  .get('/getAllGoodListsByUserId', getAllFriendListsByUserId)
+  .post('/getListById', getListById)
+  .get('/getAllFriendListsByUserId', getAllFriendListsByUserId)
+  .post('/editFriendList', editFriendList)
   .post('/addFriend', addFriend);

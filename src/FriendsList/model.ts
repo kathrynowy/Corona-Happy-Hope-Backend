@@ -6,6 +6,6 @@ export interface FriendsListModel extends mongoose.Document {
   name: string;
   accessRule: AccessRules;
   description: string;
-  image: number;
-  accessUsers: any[];
+  image: string;
+  friends: string[];
 }

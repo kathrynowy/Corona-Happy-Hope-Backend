@@ -33,4 +33,8 @@ const goodsListSchema = new Schema(
   { versionKey: false },
 );
 
+goodsListSchema.set('toJSON', {
+  virtuals: true,
+});
+
 export default mongoose.model<GoodsListModel>('goodsList', goodsListSchema);
