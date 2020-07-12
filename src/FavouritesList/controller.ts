@@ -15,7 +15,7 @@ export const getFavouriteListByUserId: Controller = async (req, res, next) => {
   try {
     const { userId } = req.query;
 
-    const favourites = await favouritesListHelper.getByUserId(userId);
+    const favourites = await favouritesListHelper.getByUserId(userId || '');
 
     res.json(favourites[0]);
   } catch (error) {

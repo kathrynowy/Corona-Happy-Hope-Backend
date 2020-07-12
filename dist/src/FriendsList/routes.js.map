@@ -1,0 +1,1 @@
+{"version":3,"file":"routes.js","sourceRoot":"","sources":["../../../src/FriendsList/routes.ts"],"names":[],"mappings":";;AAAA,mCAAmC;AAEnC,6CAAmH;AAEnH,kBAAe,OAAO;KACnB,MAAM,EAAE;KACR,IAAI,CAAC,mBAAmB,EAAE,6BAAgB,CAAC;KAC3C,IAAI,CAAC,cAAc,EAAE,wBAAW,CAAC;KACjC,GAAG,CAAC,4BAA4B,EAAE,sCAAyB,CAAC;KAC5D,IAAI,CAAC,iBAAiB,EAAE,2BAAc,CAAC;KACvC,IAAI,CAAC,YAAY,EAAE,sBAAS,CAAC,CAAC"}
