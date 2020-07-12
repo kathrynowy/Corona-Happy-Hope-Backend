@@ -12,8 +12,15 @@ const dbConfig = config.get('NODE_ENV').dbConfig;
 /* tslint:disable:no-console */
 const connectWithRetry = () => {
   mongoose
-    .connect(process.env.MONGODB_URI || dbConfig.uri || defaultConfig.dbConfig.uri, { useNewUrlParser: true })
-    .then(async () => console.log('Connection to DB established successfully', process.env.MONGODB_URI || dbConfig.uri))
+    .connect('mongodb+srv://kathrynowy:katerina99@cluster0-lawht.mongodb.net/wishmarket?retryWrites=true', {
+      useNewUrlParser: true,
+    })
+    .then(async () =>
+      console.log(
+        'Connection to DB established successfully',
+        'mongodb+srv://kathrynowy:katerina99@cluster0-lawht.mongodb.net/wishmarket?retryWrites=true',
+      ),
+    )
     .catch((error) => {
       console.log('Connection to DB failed', error);
       setTimeout(connectWithRetry, 5000);
