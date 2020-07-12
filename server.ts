@@ -5,14 +5,7 @@ import middlewares from './src/middlewares';
 
 const app = express();
 
-const result = env.config({ path: `${__dirname}/.env` });
-
-if (result.error) {
-  throw result.error;
-}
-
-/* tslint:disable:no-console */
-console.log(result.parsed);
+env.config();
 
 middlewares(app);
 
