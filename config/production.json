@@ -1,0 +1,5 @@
+{
+  "dbConfig": {
+    "uri": "mongodb+srv://kathrynowy:katerina99@cluster0-lawht.mongodb.net/wishmarket?retryWrites=true"
+  }
+}
