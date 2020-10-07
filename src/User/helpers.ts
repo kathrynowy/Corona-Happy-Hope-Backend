@@ -9,6 +9,12 @@ const signIn = async (email: string | any, password: string | any) => await User
 
 const getById = async (id: string | any) => await User.findById(id);
 
+const createPassword = async (id: string | any, password: string) => {
+  const user = await User.findByIdAndUpdate(id, { password, isAuthFinished: true });
+
+  return user;
+};
+
 const getBookedByUser = async (id: string | any) =>
   await User.findById(id)
     .populate({
@@ -94,6 +100,18 @@ const deleteFromFollowing = async (userId: string | any, followingId: string | a
   await User.findByIdAndUpdate(followingId, { $pull: { followers: userId } });
 };
 
+const changeUserDetails = async (
+  userId: string | any,
+  userData: { firstName: string; lastName: string; city: string; country: string },
+) => {
+  await User.findByIdAndUpdate(userId, {
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    city: userData.city,
+    country: userData.country,
+  });
+};
+
 const getBookedGood = async (userId: string | any, bookUserId: string, goodId: string | any) => {
   const user = await User.findById(bookUserId);
 
@@ -122,4 +140,6 @@ export default {
   unbookGood,
   getBookedGood,
   getBookedByUser,
+  createPassword,
+  changeUserDetails,
 };

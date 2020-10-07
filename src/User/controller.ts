@@ -16,6 +16,7 @@ export const signUp: Controller = async (req, res, next) => {
       const newUser = await userHelper.create({
         ...req.body,
         password: generateHash(req.body.password),
+        isAuthFinished: true,
       });
 
       const wishlist = await wishListHelper.create({ userId: newUser.id, name: 'вишлист', goods: [] });
@@ -35,6 +36,19 @@ export const changeCurrentWishlist: Controller = async (req, res, next) => {
     const { userId, wishListId } = req.body;
 
     res.json(await userHelper.addCurrentWishlist(userId, wishListId));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changeUserData: Controller = async (req, res, next) => {
+  try {
+    const { userId, userData } = req.body;
+
+    await userHelper.changeUserDetails(userId, userData);
+
+    const user = await userHelper.getById(userId);
+    res.json(user);
   } catch (error) {
     next(error);
   }
@@ -69,6 +83,22 @@ export const bookGood: Controller = async (req, res, next) => {
     }
 
     res.json(good);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createPassword: Controller = async (req, res, next) => {
+  try {
+    const { password, id } = req.body;
+    console.log('psw', password, id);
+
+    const hashedPassword = generateHash(password as string);
+
+    const user = await userHelper.createPassword(id, hashedPassword);
+
+    console.log('new useerrrt with pswrd', user);
+    res.json(user);
   } catch (error) {
     next(error);
   }
@@ -170,6 +200,19 @@ export const getBookedGoodsByUser: Controller = async (req, res, next) => {
 
 export const signIn: Controller = async (req: GetUserAuthInfoRequest, res, next) => {
   try {
+    console.log('req.bodyyyy', req.body);
+
+    if (req.body.err) {
+      return res.status(200).json({
+        email: req.body?.email || '',
+        id: req.body?.id || '',
+        firstName: req.body?.firstName || '',
+        lastName: req.body?.lastName || '',
+        err: 'true',
+      });
+    }
+
+    console.log('hereeee');
     return res.status(200).json({
       email: req.body?.email || '',
       token: req.body?.token || '',
@@ -181,6 +224,10 @@ export const signIn: Controller = async (req: GetUserAuthInfoRequest, res, next)
       currentWishlist: req.body?.currentWishlist || '',
     }); // TODO:
   } catch (error) {
-    next(error);
+    console.log('!!!!!!!');
+    res.redirect(
+      `http://corona-happy-wishmarket.000webhostapp.com/create-password?id=${req.body.id}&email=${req.body.email}&firstName=${req.body.firstName}&lastName=${req.body.lastName}`,
+    );
+    // next(error);
   }
 };

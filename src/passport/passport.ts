@@ -9,6 +9,16 @@ import wishListHelper from '../WishList/helpers';
 import favouriteListHelper from '../FavouritesList/helpers';
 import userHelper from '../User/helpers';
 
+passport.serializeUser((user, done) => {
+  done(null, user.userData);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id).then((user) => {
+    done(null, user);
+  });
+});
+
 const LocalStrategy = passportLocal.Strategy;
 // const GoogleStrategy = passportGoogle.Strategy;
 
@@ -28,6 +38,20 @@ passport.use(
           return done(null, false, { message: 'No user found' });
         }
 
+        if (!user.isAuthFinished) {
+          console.log('rrrrrrrrrr!!');
+          // res.redirect(
+          //   `http://localhost:3001/create-password?id=${req.user._id}&email=${req.user.email}&firstName=${req.user.firstName}&lastName=${req.user.lastName}`,
+          // );
+          req.body.err = true;
+          req.body.firstName = user.firstName;
+          req.body.lastName = user.lastName;
+          req.body.id = user._id;
+          req.body.email = user.email;
+
+          return done(null, user);
+        }
+
         if (!user.validPassword(password)) {
           return done(null, false, { message: 'Wrong password' });
         }
@@ -42,6 +66,7 @@ passport.use(
 
         return done(null, user);
       } catch (error) {
+        console.log('errororor');
         return done(error, false);
       }
     },
@@ -66,8 +91,12 @@ passport.use(
 
         let newUser = existUser;
 
+        console.log('existUser', existUser);
+
         if (existUser) {
-          return done(null, existUser);
+          // const userForQuery = { ...existUser, token: accessToken };
+
+          return done(null, { userData: existUser, token: accessToken });
         }
 
         if (!existUser) {
@@ -100,7 +129,7 @@ passport.use(
         // return done(null, { ...profile, ...newUser });
         console.log('profile', newUser);
 
-        return done(null, newUser);
+        return done(null, { userData: newUser });
       } catch (err) {
         console.log('auth err', err);
       }

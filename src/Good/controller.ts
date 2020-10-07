@@ -1,10 +1,14 @@
 import { Controller } from '../types/controller';
 import wishListHelper from '../WishList/helpers';
+import ideasHelper from '../Ideas/helpers';
+
 import goodHelper from './helpers';
 
 export const addGood: Controller = async (req, res, next) => {
   try {
     const good = await goodHelper.create(req.body);
+
+    await ideasHelper.addIdea('5eef6e9e08328511222dea1d', good.id);
 
     const wishListIds = req.body.wishListIds;
 
